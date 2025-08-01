@@ -30,7 +30,7 @@ func TestMul(t *testing.T) {
 }
 func TestDiv(t *testing.T) {
     result := Div(2, 3)
-    expected := 5
+    expected := 0
 
     if result != expected {
         t.Errorf("Div(2, 3) = %d; want %d", result, expected)
