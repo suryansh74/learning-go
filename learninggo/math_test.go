@@ -36,3 +36,12 @@ func TestDiv(t *testing.T) {
         t.Errorf("Div(2, 3) = %d; want %d", result, expected)
     }
 }
+
+func TestExponent(t *testing.T) {
+    result := Exponent(2, 3)
+    expected := 8
+
+    if result != expected {
+        t.Errorf("Exponent(2, 3) = %d; want %d", result, expected)
+    }
+}

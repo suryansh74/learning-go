@@ -14,7 +14,11 @@ func Mul(a, b int) int {
 func Div(a, b int) int {
 	return a / b
 }
-
-
-
-
+func Exponent(base, exp int) int {
+	result := 1
+	for exp > 0 {
+		result *= base
+		exp--
+	}
+	return result
+}
