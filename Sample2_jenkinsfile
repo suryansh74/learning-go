@@ -15,7 +15,24 @@ pipeline {
         }
         stage("Test") {
             steps {
-                echo "Testing here with release of ${RELEASE} and log level ${LOG}"
+                echo "Testing here with release of ${RELEASE}"
+            }
+        }
+        stage("Deploy") {
+            input {
+                message "Deploy"?
+                ok "Do It!"
+                parameters {
+                    string (name:"TARGET_ENVIRONMENT", defaultValue: "PROD", description: "Target Developement environment")
+                }
+                steps {
+                    echo "Deploying release ${RELEASE} to environment ${TARGET_ENVIRONMENT}"
+                }
+            }
+        }
+        post {
+            always {
+                echo "Prints always wheater deployed successfull or not"
             }
         }
     }
