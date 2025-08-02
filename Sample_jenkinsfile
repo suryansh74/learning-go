@@ -8,18 +8,14 @@ pipeline {
 
     stages {
         stage('Checkout') {
-            steps {
-                script {
-                    // Clone the Git repository's master branch
-                    def gitRepoUrl = 'https://github.com/suryansh74/learning-go.git'
+			steps {
+				checkout([$class: 'GitSCM',
+					branches: [[name: '*/main']],
+					userRemoteConfigs: [[url: 'https://github.com/suryansh74/learning-go.git']]
+				])
+			}
+		}
 
-                    checkout([$class: 'GitSCM', 
-                        branches: [[name: '*/master']], 
-                        userRemoteConfigs: [[url: gitRepoUrl]], 
-                        extensions: [[$class: 'CleanBeforeCheckout'], [$class: 'CloneOption', noTags: false, shallow: true, depth: 1]]
-                    ])
-                }
-            }
         }
 
         stage('Build') {
