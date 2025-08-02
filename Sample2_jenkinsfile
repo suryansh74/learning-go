@@ -1,13 +1,12 @@
 pipeline {
     agent any
     environment {
-        RELEASE="20.3.12"
+        RELEASE = "20.3.12"
     }
     stages {
         stage("Build") {
-            agent any
             environment {
-               LOG="INFO" 
+                LOG = "INFO"
             }
             steps {
                 echo "Building release ${RELEASE} with log level ${LOG}"
@@ -19,21 +18,23 @@ pipeline {
             }
         }
         stage("Deploy") {
-            input {
-                message "Deploy?"
-                ok "Do It!"
-                parameters {
-                    string (name:"TARGET_ENVIRONMENT", defaultValue: "PROD", description: "Target Developement environment")
-                }
-                steps {
+            steps {
+                script {
+                    def TARGET_ENVIRONMENT = input(
+                        message: "Deploy?",
+                        ok: "Do It!",
+                        parameters: [
+                            string(name: "TARGET_ENVIRONMENT", defaultValue: "PROD", description: "Target Development environment")
+                        ]
+                    )
                     echo "Deploying release ${RELEASE} to environment ${TARGET_ENVIRONMENT}"
                 }
             }
         }
-        post {
-            always {
-                echo "Prints always wheater deployed successfull or not"
-            }
+    }
+    post {
+        always {
+            echo "Prints always whether deployed successful or not"
         }
     }
 }
