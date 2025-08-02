@@ -1,20 +1,20 @@
-pipeline{
+pipeline {
     agent any
-    enviroment {
+    environment {
         RELEASE="20.3.12"
     }
-    stages{
-        stage("Build"){
-            any agent
-            enviroment{
+    stages {
+        stage("Build") {
+            agent any
+            environment {
                LOG="INFO" 
             }
-            steps{
+            steps {
                 echo "Building release ${RELEASE} with log level ${LOG}"
             }
         }
-        stage("Test"){
-            steps{
+        stage("Test") {
+            steps {
                 echo "Testing here with release of ${RELEASE} and log level ${LOG}"
             }
         }
