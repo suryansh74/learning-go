@@ -24,5 +24,37 @@ pipeline {
                 sh "go test ./... -v"
             }
         }
+        stage("Deploy") {
+            steps {
+                script {
+                    def userInput = input(
+                        message: "Deploy?",
+                        ok: "Do It!",
+                        parameters: [
+                            string(name: "TARGET_ENVIRONMENT", defaultValue: "PROD", description: "Target Development environment"),
+                            booleanParam(name: "MAJOR_CHANGES", defaultValue: false, description: "Check for Major Changes")
+                        ]
+                    )
+
+                    def targetEnv = userInput["TARGET_ENVIRONMENT"]
+                    def majorChanges = userInput["MAJOR_CHANGES"]
+
+                    if (majorChanges) {
+                        echo "User selected Major Changes → Going to 'Major Changes' stage"
+                        // Place major changes logic here
+                    } else {
+                        echo "No Major Changes selected → Going to 'My Images' stage"
+                        // Place my images logic here
+                    }
+
+                    echo "Deploying release ${RELEASE_VERSION} to environment ${targetEnv}"
+                }
+            }
+        }
+    }
+    post {
+        always {
+            echo "Prints always whether deployed successful or not"
+        }
     }
 }
