@@ -27,15 +27,27 @@ pipeline {
         stage("Deploy") {
             steps {
                 script {
-                    def userInput = input(
-                        message: "Deploy?",
-                        ok: "Do It!",
+                    // First, ask for environment
+                    def targetEnv = input(
+                        message: "Select Target Environment",
+                        ok: "Continue",
                         parameters: [
-                            booleanParam(name: "MAJOR_CHANGES", defaultValue: false, description: "Check for Major Changes")
+                            string(name: "TARGET_ENVIRONMENT", defaultValue: "PROD", description: "Target environment (e.g., DEV, QA, PROD)")
                         ]
                     )
 
-                    def majorChanges = userInput["MAJOR_CHANGES"]
+                    def majorChanges = false
+
+                    // If not PROD, ask for the boolean
+                    if (targetEnv != "PROD") {
+                        majorChanges = input(
+                            message: "Do you want to enable Major Changes?",
+                            ok: "Continue",
+                            parameters: [
+                                booleanParam(name: "MAJOR_CHANGES", defaultValue: false, description: "Check for Major Changes")
+                            ]
+                        )["MAJOR_CHANGES"]
+                    }
 
                     if (majorChanges) {
                         echo "User selected Major Changes → Going to 'Major Changes' stage"
@@ -45,7 +57,7 @@ pipeline {
                         // Place my images logic here
                     }
 
-                    echo "Deploying release ${RELEASE_VERSION}"
+                    echo "Deploying release ${RELEASE_VERSION} to environment ${targetEnv}"
                 }
             }
         }
