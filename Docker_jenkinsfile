@@ -1,0 +1,20 @@
+pipeline {
+    agent {
+        docker {
+            image 'golang'
+        }
+    }
+    environment {
+        VERSION = "20.3.12"
+        RELEASE_VERSION = "R.2"
+    }
+    stages {
+        stage("Audit tools") {
+            steps {
+                sh '''
+                    go version
+                '''
+            }
+        }
+    }
+}
