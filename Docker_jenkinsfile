@@ -31,12 +31,10 @@ pipeline {
                         message: "Deploy?",
                         ok: "Do It!",
                         parameters: [
-                            string(name: "TARGET_ENVIRONMENT", defaultValue: "PROD", description: "Target Development environment"),
                             booleanParam(name: "MAJOR_CHANGES", defaultValue: false, description: "Check for Major Changes")
                         ]
                     )
 
-                    def targetEnv = userInput["TARGET_ENVIRONMENT"]
                     def majorChanges = userInput["MAJOR_CHANGES"]
 
                     if (majorChanges) {
@@ -47,7 +45,7 @@ pipeline {
                         // Place my images logic here
                     }
 
-                    echo "Deploying release ${RELEASE_VERSION} to environment ${targetEnv}"
+                    echo "Deploying release ${RELEASE_VERSION}"
                 }
             }
         }
